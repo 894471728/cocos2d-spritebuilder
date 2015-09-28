@@ -60,7 +60,7 @@ const CGSize FIXED_SIZE = {568, 384};
 // The available orientations should be defined in the Info.plist file.
 // And in iOS 6+ only, you can override it in the Root View controller in the "supportedInterfaceOrientations" method.
 // Only valid for iOS 6+. NOT VALID for iOS 4 / 5.
--(NSUInteger)supportedInterfaceOrientations
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     if ([_screenOrientation isEqual:CCScreenOrientationAll])
     {
@@ -124,7 +124,7 @@ const CGSize FIXED_SIZE = {568, 384};
 
 @synthesize window=window_, navController=navController_;
 
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
 {
 	return UIInterfaceOrientationMaskAll;
 }
@@ -187,8 +187,6 @@ FindPOTScale(CGFloat size, CGFloat fixedSize)
 	}
 	
 	CCDirectorIOS* director = (CCDirectorIOS*) [CCDirector sharedDirector];
-	
-	director.wantsFullScreenLayout = YES;
 	
 	// Display FSP and SPF
 	[director setDisplayStats:[config[CCSetupShowDebugStats] boolValue]];

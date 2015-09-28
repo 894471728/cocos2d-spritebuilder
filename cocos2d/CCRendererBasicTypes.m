@@ -292,7 +292,7 @@ static CCRenderState *CCRENDERSTATE_DEBUGCOLOR = nil;
 	if(self != [CCRenderState class]) return;
 	
 	CCRENDERSTATE_CACHE = [[CCRenderStateCache alloc] init];
-	CCRENDERSTATE_DEBUGCOLOR = [[CCRenderStateClass alloc] initWithBlendMode:CCBLEND_DISABLED shader:[CCShader positionColorShader] shaderUniforms:@{}];
+	CCRENDERSTATE_DEBUGCOLOR = [[CCRenderStateClass alloc] initWithBlendMode:CCBLEND_DISABLED shader:[CCShader positionColorShader] shaderUniforms:@{} copyUniforms:YES];
 }
 
 +(void)flushCache
