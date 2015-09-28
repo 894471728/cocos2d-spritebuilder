@@ -35,13 +35,35 @@
 #import "CCConfiguration.h"
 #import "CCMetalSupport_Private.h"
 
+// Stringify macros
+#define STR(s) #s
+#define XSTR(s) STR(s)
+
 // Vertex shader that performs the modelview-projection multiplication on the GPU.
 // Faster for draw nodes that draw many vertexes, but can't be batched.
 static NSString *CCDrawNodeHWTransformVertexShaderSource =
+	@"attribute highp vec4 cc_Position;\n"
+	@"attribute highp vec2 cc_TexCoord1;\n"
+	@"attribute highp vec4 cc_Color;\n\n"
+	@"varying " XSTR(CC_SHADER_COLOR_PRECISION) " vec4 cc_FragColor;\n"
+	@"varying highp vec2 cc_FragTexCoord1;\n"
 	@"uniform highp mat4 u_MVP;\n"
 	@"uniform highp vec4 u_TintColor;\n"
 	@"void main(){\n"
 	@"	gl_Position = u_MVP*cc_Position;\n"
+	@"	cc_FragColor = clamp(u_TintColor*cc_Color, 0.0, 1.0);\n"
+	@"	cc_FragTexCoord1 = cc_TexCoord1;\n"
+	@"}\n";
+
+static NSString *CCDrawNodeSWTransformVertexShaderSource =
+	@"attribute highp vec4 cc_Position;\n"
+	@"attribute highp vec2 cc_TexCoord1;\n"
+	@"attribute highp vec4 cc_Color;\n\n"
+	@"varying " XSTR(CC_SHADER_COLOR_PRECISION) " vec4 cc_FragColor;\n"
+	@"varying highp vec2 cc_FragTexCoord1;\n"
+	@"uniform highp vec4 u_TintColor;\n"
+	@"void main(){\n"
+	@"	gl_Position = cc_Position;\n"
 	@"	cc_FragColor = clamp(u_TintColor*cc_Color, 0.0, 1.0);\n"
 	@"	cc_FragTexCoord1 = cc_TexCoord1;\n"
 	@"}\n";
@@ -56,7 +78,8 @@ static NSString *CCDrawNodeFragmentShaderSource =
 	@"#ifdef GL_ES\n"
 	@"#extension GL_OES_standard_derivatives : enable\n"
 	@"#endif\n"
-	@"\n"
+	@"varying " XSTR(CC_SHADER_COLOR_PRECISION) " vec4 cc_FragColor;\n"
+	@"varying highp vec2 cc_FragTexCoord1;\n"
 	@"void main(){\n"
 	@"	gl_FragColor = cc_FragColor*smoothstep(0.0, length(fwidth(cc_FragTexCoord1)), 1.0 - length(cc_FragTexCoord1));\n"
 	@"}\n";
@@ -89,10 +112,10 @@ CCShader *CCDRAWNODE_BATCH_SHADER = nil;
 	} else
 #endif
 	{
-		CCDRAWNODE_HWTRANSFORM_SHADER = [[CCShader alloc] initWithVertexShaderSource:CCDrawNodeHWTransformVertexShaderSource fragmentShaderSource:CCDrawNodeFragmentShaderSource];
+		CCDRAWNODE_HWTRANSFORM_SHADER = [[CCShader alloc] initWithRawVertexShaderSource:CCDrawNodeHWTransformVertexShaderSource rawFragmentShaderSource:CCDrawNodeFragmentShaderSource];
 		CCDRAWNODE_HWTRANSFORM_SHADER.debugName = @"CCDRAWNODE_HWTRANSFORM_SHADER";
 		
-		CCDRAWNODE_BATCH_SHADER = [[CCShader alloc] initWithFragmentShaderSource:CCDrawNodeFragmentShaderSource];
+		CCDRAWNODE_BATCH_SHADER = [[CCShader alloc] initWithRawVertexShaderSource:CCDrawNodeSWTransformVertexShaderSource rawFragmentShaderSource:CCDrawNodeFragmentShaderSource];
 		CCDRAWNODE_BATCH_SHADER.debugName = @"CCDRAWNODE_BATCH_SHADER";
 	}
 }

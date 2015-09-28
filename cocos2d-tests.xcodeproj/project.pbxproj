@@ -1555,7 +1555,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "cocos2d-ui-tests/ios/Prefix.pch";
 				INFOPLIST_FILE = "cocos2d-ui-tests/ios/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_HEADER_SEARCH_PATHS = "/Users/slembcke/Development/cocos2d-iphone/cocos2d";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -1588,7 +1588,7 @@
 				GCC_PREFIX_HEADER = "cocos2d-ui-tests/ios/Prefix.pch";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "cocos2d-ui-tests/ios/Resources/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_HEADER_SEARCH_PATHS = "/Users/slembcke/Development/cocos2d-iphone/cocos2d";
 				OTHER_LDFLAGS = (
 					"-lz",
